@@ -2,7 +2,7 @@ using System;
 using System.Text;
 
 namespace BlockChainLib;
-
+// alll properties must be public in order to serialize & deserialize
 public class Block {
     public int BlockNbr { get; set; } = 0;
     public int Nonce { get; set; } = 0;

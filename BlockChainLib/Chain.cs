@@ -12,28 +12,56 @@ public class Chain {
 
     private static JsonSerializerOptions _jsonOptions = new() {
         AllowTrailingCommas = true,
+        PropertyNameCaseInsensitive = true,
         WriteIndented = true
     };
 
-    public void Add(int key, Block block) {
-        _chain.Add(key, block);
+    internal void Add(int key, Block block) {
+        Block _lastBlock = LastBlock();
+        block.BlockNbr = _lastBlock.BlockNbr + 1;
+        // Nonce defaults to zero
+        block.PrevHash = _lastBlock.CurrHash;
+        block.CurrHash = CypherCode.Encrypt(block.ToStringData());
+        while(!block.CurrHash.StartsWith("0000")) {
+            block.Nonce++;
+            block.CurrHash = CypherCode.Encrypt(block.ToStringData());
+        }
+        _chain.Add(block.BlockNbr, block);
     }
 
-    public int BlockCount() {
+    internal void VerifyChain() 
+    {
+        foreach(var block in _chain) {
+            var verifyHash = CypherCode.Encrypt(block.Value.ToStringData());
+            if(verifyHash != block.Value.CurrHash) {
+                Console.WriteLine($"Block {block.Value.BlockNbr} is invalid");
+            }
+            
+        }
+    }
+
+    internal int BlockCount() 
+    {
         return _chain.Count;
     }
 
-    public Block LastBlock() {
+    internal Block LastBlock() 
+    {
+        if(_chain.Count == 0) {
+            return new Block();
+        }
         return _chain.Last().Value;
     }
 
     // Clear the block chain
-    public void ClearChain() {
+    public void ClearChain() 
+    {
         
     }
 
     // Read existing block chain
-    public void ReadChain() {
+    public void ReadChain() 
+    {
         if(File.Exists(_fileName)) {
             string _json = File.ReadAllText(_fileName);
             List<Block>? _blocks = JsonSerializer.Deserialize<List<Block>>(_json, _jsonOptions);
@@ -50,11 +78,11 @@ public class Chain {
     }
 
     // Write current block chain 
-    public void WriteChainDirect() {
+    public void WriteChainRaw() {
 
         Block _lastBlock = _chain.Last().Value;
         StringBuilder _sb = new();
-        _sb.Append("[");
+        _sb.Append('[');
         foreach(var block in _chain) {
             _sb.Append($"{block.Value.ToJsonData()}");
             if(block.Value.BlockNbr != _lastBlock.BlockNbr) {

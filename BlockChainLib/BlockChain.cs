@@ -23,6 +23,7 @@ public class BlockChain : IDisposable
     public BlockChain() {
         Console.WriteLine("ReadChain()");
         _chain.ReadChain();
+        _chain.VerifyChain();
     }
 
     public void Dispose()
