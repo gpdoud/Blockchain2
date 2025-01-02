@@ -28,15 +28,29 @@ public class Chain {
         }
         _chain.Add(block.BlockNbr, block);
     }
-
+    /// <summary>
+    /// Will check that all blocks are valid and that the chain is unbroken
+    /// </summary>
     internal void VerifyChain() 
     {
-        foreach(var block in _chain) {
-            var verifyHash = CypherCode.Encrypt(block.Value.ToStringData());
+        // retrieve the first block
+        if(_chain.Count == 0) {
+            return;
+        }
+        Block prevBlock = _chain.First().Value;
+        var verifyHash = CypherCode.Encrypt(prevBlock.ToStringData());
+        if(verifyHash != prevBlock.CurrHash) {
+            Console.WriteLine($"Block {prevBlock.BlockNbr} is invalid");
+        }
+        foreach(var block in _chain.Skip(1).ToList()) {
+            verifyHash = CypherCode.Encrypt(block.Value.ToStringData());
             if(verifyHash != block.Value.CurrHash) {
                 Console.WriteLine($"Block {block.Value.BlockNbr} is invalid");
             }
-            
+            if(block.Value.PrevHash != prevBlock.CurrHash) {
+                Console.WriteLine($"Block {block.Value.BlockNbr} does not match previous block");
+            }
+            prevBlock = block.Value;
         }
     }
 
