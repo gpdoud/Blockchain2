@@ -18,12 +18,18 @@ public class Chain
         WriteIndented = true
     };
 
+    internal ICollection<Block> GetAll()
+    {
+        return _chain.Values;
+    }
+
     internal void Add(int key, Block block)
     {
         Block _lastBlock = LastBlock();
         block.BlockNbr = _lastBlock.BlockNbr + 1;
         // Nonce defaults to zero
         block.PrevHash = _lastBlock.CurrHash;
+        block.LoadData();
         block.CurrHash = CypherCode.Encrypt(block.ToStringData());
         while (!block.CurrHash.StartsWith("0000"))
         {

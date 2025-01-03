@@ -4,9 +4,15 @@ Console.WriteLine("BlockChainLib Test");
 
 BlockChain _blockChain = new();
 
-// Block block = new Block {
-//     Data = "This should be the ninth block"
-// };
-// _blockChain.Add(block.BlockNbr, block);
+/*
+Block _block = new();
+_block.AddDataLine($"This should be the eleventh block");
+_block.AddDataLine($"Deposit | 1000.00 | 2025-01-03 | GPD");
+_block.AddDataLine($"Transfer | 100.00 | 2025-01-03 | GPD | CJD");
+_block.AddDataLine($"Withdraw | 50.00 | 2025-01-03 | GPD");
+_blockChain.Add(_block.BlockNbr, _block);
+*/
+
+_blockChain.Print();
 
 _blockChain.Dispose();

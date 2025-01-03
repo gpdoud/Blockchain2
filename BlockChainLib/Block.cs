@@ -11,6 +11,18 @@ public class Block
     public string PrevHash { get; set; } = "000000000000000000000000000000000000000000000000000000000000000";
     public string CurrHash { get; set; } = "000000000000000000000000000000000000000000000000000000000000000";
 
+    private StringBuilder _sbData = new();
+
+    public void AddDataLine(string line)
+    {
+        _sbData.Append($"{line}\n");
+    }
+
+    public void LoadData() 
+    {
+        Data = _sbData.ToString();
+    }
+
     public string ToStringData()
     {
         StringBuilder sb = new StringBuilder();
