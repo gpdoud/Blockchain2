@@ -20,7 +20,8 @@ public class BlockChain : IDisposable
         return _chain.LastBlock(); ;
     }
 
-    public BlockChain() {
+    public BlockChain()
+    {
         Console.WriteLine("ReadChain()");
         _chain.ReadChain();
         _chain.VerifyChain();
@@ -32,11 +33,14 @@ public class BlockChain : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    ~BlockChain() {
+    ~BlockChain()
+    {
         Dispose(false);
     }
-    protected virtual void Dispose(bool disposing) {
-        if (disposing) {
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
             Console.WriteLine("WriteChain()");
             _chain.WriteChain();
         }
