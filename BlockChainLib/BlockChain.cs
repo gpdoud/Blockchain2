@@ -29,6 +29,7 @@ public class BlockChain : IDisposable
 
     public void Print(int startBlockNbr = 1, int endBlockNbr = int.MaxValue)
     {
+        Console.WriteLine($"Print blocks from {startBlockNbr} to {(endBlockNbr != int.MaxValue ? endBlockNbr.ToString() : "end")}");
         foreach (var block in _chain.GetAll())
         {
             if(block.BlockNbr > endBlockNbr) return;

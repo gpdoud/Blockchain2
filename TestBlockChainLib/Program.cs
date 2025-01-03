@@ -13,6 +13,6 @@ _block.AddDataLine($"Withdraw | 50.00 | 2025-01-03 | GPD");
 _blockChain.Add(_block.BlockNbr, _block);
 */
 
-_blockChain.Print();
+_blockChain.Print(startBlockNbr: 10, endBlockNbr: 11);
 
 _blockChain.Dispose();
